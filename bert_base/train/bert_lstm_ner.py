@@ -98,32 +98,9 @@ class NerProcessor(DataProcessor):
         return self._create_example(
             self._read_data(os.path.join(data_dir, "test.txt")), "test")
 
-    def get_labels(self, labels=None):
-        if labels is not None:
-            try:
-                # 支持从文件中读取标签类型
-                if os.path.exists(labels) and os.path.isfile(labels):
-                    with codecs.open(labels, 'r', encoding='utf-8') as fd:
-                        for line in fd:
-                            self.labels.append(line.strip())
-                else:
-                    # 否则通过传入的参数，按照逗号分割
-                    self.labels = labels.split(',')
-                self.labels = set(self.labels) # to set
-            except Exception as e:
-                print(e)
-        # 通过读取train文件获取标签的方法会出现一定的风险。
-        if os.path.exists(os.path.join(self.output_dir, 'label_list.pkl')):
-            with codecs.open(os.path.join(self.output_dir, 'label_list.pkl'), 'rb') as rf:
-                self.labels = pickle.load(rf)
-        else:
-            if len(self.labels) > 0:
-                self.labels = self.labels.union(set(["X", "[CLS]", "[SEP]"]))
-                with codecs.open(os.path.join(self.output_dir, 'label_list.pkl'), 'wb') as rf:
-                    pickle.dump(self.labels, rf)
-            else:
-                self.labels = ["O", 'B-TIM', 'I-TIM', "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC", "X", "[CLS]", "[SEP]"]
-        return self.labels
+    def get_labels(self):
+        return ["PAD", "B-DES", "I-DES", "B-SYD", "I-SYD", "B-DIS", "I-DIS", "B-MED", "I-MED",
+                "B-SUR", "I-SUR", "B-ANA", "I-ANA", "O", "[CLS]", "[SEP]"]
 
     def _create_example(self, lines, set_type):
         examples = []
