@@ -267,9 +267,9 @@ class BertClient(object):
             warnings.warn('some of your sentences have more tokens than "max_seq_len=%d" set on the server, '
                           'as consequence you may get less-accurate or truncated embeddings.\n'
                           'here is what you can do:\n'
-                          '- disable the length-check by create a new "BertClient(check_length=False)" '
+                          '- disable the length-check by create a NERdata "BertClient(check_length=False)" '
                           'when you do not want to display this warning\n'
-                          '- or, start a new server with a larger "max_seq_len"' % self.length_limit)
+                          '- or, start a NERdata server with a larger "max_seq_len"' % self.length_limit)
 
         texts = _unicode(texts)
         self._send(jsonapi.dumps(texts), len(texts))

@@ -196,7 +196,7 @@ class BertServer(threading.Thread):
                 if msg == ServerCommand.terminate:
                     break
                 elif msg == ServerCommand.show_config:
-                    self.logger.info('new config request\treq id: %d\tclient: %s' % (int(req_id), client))
+                    self.logger.info('NERdata config request\treq id: %d\tclient: %s' % (int(req_id), client))
                     status_runtime = {'client': client.decode('ascii'),
                                       'num_process': len(self.processes),
                                       'ventilator -> worker': addr_backend_list,
@@ -211,9 +211,9 @@ class BertServer(threading.Thread):
                                                                      **self.status_args,
                                                                      **self.status_static}), req_id])
                 else:
-                    self.logger.info('new encode request\treq id: %d\tsize: %d\tclient: %s' %
+                    self.logger.info('NERdata encode request\treq id: %d\tsize: %d\tclient: %s' %
                                      (int(req_id), int(msg_len), client))
-                    # register a new job at sink
+                    # register a NERdata job at sink
                     sink.send_multipart([client, ServerCommand.new_job, msg_len, req_id])
 
                     # renew the backend socket to prevent large job queueing up
@@ -221,7 +221,7 @@ class BertServer(threading.Thread):
                     # last used backennd shouldn't be selected either as it may be queued up already
                     rand_backend_socket = random.choice([b for b in backend_socks[1:] if b != rand_backend_socket])
 
-                    # push a new job, note super large job will be pushed to one socket only,
+                    # push a NERdata job, note super large job will be pushed to one socket only,
                     # leaving other sockets free
                     job_id = client + b'#' + req_id
                     if int(msg_len) > self.max_batch_size:
@@ -311,7 +311,7 @@ class BertSink(Process):
         # send worker receiver address back to frontend
         frontend.send(receiver_addr.encode('ascii'))
 
-        # Windows does not support logger in MP environment, thus get a new logger
+        # Windows does not support logger in MP environment, thus get a NERdata logger
         # inside the process for better compability
         logger = set_logger(colored('SINK', 'green'), self.verbose)
         logger.info('ready')
@@ -492,7 +492,7 @@ class BertWorker(Process):
     @zmqd.socket(zmq.PUSH)
     @multi_socket(zmq.PULL, num_socket='num_concurrent_socket')
     def _run(self, sink, *receivers):
-        # Windows does not support logger in MP environment, thus get a new logger
+        # Windows does not support logger in MP environment, thus get a NERdata logger
         # inside the process for better compatibility
         logger = set_logger(colored('WORKER-%d' % self.worker_id, 'yellow'), self.verbose)
 
@@ -529,7 +529,7 @@ class BertWorker(Process):
 
         def gen():
             tokenizer = FullTokenizer(vocab_file=os.path.join(self.args.bert_model_dir, 'vocab.txt'))
-            # Windows does not support logger in MP environment, thus get a new logger
+            # Windows does not support logger in MP environment, thus get a NERdata logger
             # inside the process for better compatibility
             logger = set_logger(colored('WORKER-%d' % self.worker_id, 'yellow'), self.verbose)
 
@@ -545,7 +545,7 @@ class BertWorker(Process):
                         #接收来自客户端的消息
                         client_id, raw_msg = sock.recv_multipart()
                         msg = jsonapi.loads(raw_msg)
-                        logger.info('new job\tsocket: %d\tsize: %d\tclient: %s' % (sock_idx, len(msg), client_id))
+                        logger.info('NERdata job\tsocket: %d\tsize: %d\tclient: %s' % (sock_idx, len(msg), client_id))
                         # check if msg is a list of list, if yes consider the input is already tokenized
                         # 对接收到的字符进行切词，并且转化为id格式
                         # logger.info('get msg:%s, type:%s' % (msg[0], type(msg[0])))

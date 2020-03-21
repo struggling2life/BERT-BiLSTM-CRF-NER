@@ -19,8 +19,8 @@ def get_args_parser():
         bert_path = 'F:\chinese_L-12_H-768_A-12'
         root_path = r'C:\workspace\python\BERT-BiLSTM-CRF-NER'
     else:
-        bert_path = '/home/macan/ml/data/chinese_L-12_H-768_A-12/'
-        root_path = '/home/macan/ml/workspace/BERT-BiLSTM-CRF-NER'
+        bert_path = '/Users/lamprad/Downloads/chinese_L-12_H-768_A-12/'
+        root_path = '/Users/lamprad/Desktop/BERT-BiLSTM-CRF-NER'
 
     group1 = parser.add_argument_group('File Paths',
                                        'config the path, checkpoint and filename of a pretrained/fine-tuned BERT model')
@@ -35,7 +35,7 @@ def get_args_parser():
                         help='')
 
     group2 = parser.add_argument_group('Model Config', 'config the model params')
-    group2.add_argument('-max_seq_length', type=int, default=202,
+    group2.add_argument('-max_seq_length', type=int, default=512,
                         help='The maximum total input sequence length after WordPiece tokenization.')
     group2.add_argument('-do_train', action='store_false', default=True,
                         help='Whether to run training.')
