@@ -6,6 +6,7 @@
  @Author  : MaCan (ma_cancan@163.com)
  @File    : __init__.py.py
 """
+import sys
 
 
 def start_server():
@@ -37,6 +38,10 @@ def train_ner():
     os.environ['CUDA_VISIBLE_DEVICES'] = args.device_map
     train(args=args)
 
+
 if __name__ == '__main__':
+    sys.path.append("/root/BERT-BiLSTM-CRF-NER/bert_base")
+    sys.path.append("/root/BERT-BiLSTM-CRF-NER")
+    print("python搜索模块的路径集合", sys.path)
     # start_server()
     train_ner()

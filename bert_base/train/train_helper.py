@@ -19,8 +19,8 @@ def get_args_parser():
         bert_path = 'F:\chinese_L-12_H-768_A-12'
         root_path = r'C:\workspace\python\BERT-BiLSTM-CRF-NER'
     else:
-        bert_path = '/Users/lamprad/Downloads/chinese_L-12_H-768_A-12/'
-        root_path = '/Users/lamprad/Desktop/BERT-BiLSTM-CRF-NER'
+        bert_path = '/root/chinese_L-12_H-768_A-12/'
+        root_path = '/root/BERT-BiLSTM-CRF-NER'
 
     group1 = parser.add_argument_group('File Paths',
                                        'config the path, checkpoint and filename of a pretrained/fine-tuned BERT model')
